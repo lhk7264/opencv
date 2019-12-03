@@ -1,5 +1,6 @@
 #include<opencv2/opencv.hpp>
 #include<iostream>
+#include "Edge_process.h"
 
 using namespace cv;
 
@@ -14,8 +15,9 @@ class ImageProccess {
 	Mat imageProcess(Mat carnumberImage) {
 
 		Mat grayImage, adaptiveImage;
-
-		cvtColor(carnumberImage, grayImage, COLOR_BGR2GRAY);
+		Rect rect(f_x, l_y, w, h);
+		Mat cropImage = carnumberImage(rect);
+		cvtColor(cropImage, grayImage, COLOR_BGR2GRAY);
 		adaptiveThreshold(grayImage, adaptiveImage, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 5, 10);
 		Canny(adaptiveImage, adaptiveImage, 100, 300, 3);
 

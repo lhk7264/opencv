@@ -38,31 +38,40 @@ int main()
 	//Mat subImage = image2(rect1);
 	//imshow("roi", subImage);
 
-	threshold(image2,imagethr,127,255,THRESH_BINARY);
 	adaptiveThreshold(image2, imagethr2, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 5, 10);
 	
 
-	Canny(imagethr, imagethr, 100, 300, 5);  //  엣지 검출, 값 수정 작업 필요
 	Canny(imagethr2, imagethr2, 100, 300, 5);
-	imshow("원본->그레이 변환->엣지 검출", imagethr);
 	imshow("원본->그레이 변환->엣지 검출", imagethr2);
 	waitKey(0);
 
 
 	//  Finding contours.
-	findContours(image2, contours, hierarchy, RETR_TREE,CHAIN_APPROX_SIMPLE, Point(0,0)); // 동일한 색상 강도 부분의 엣지 경계를 연결
+	findContours(imagethr2, contours, hierarchy, RETR_TREE,CHAIN_APPROX_SIMPLE, Point(0,0)); // 동일한 색상 강도 부분의 엣지 경계를 연결
 	vector<vector<Point> > contours_poly(contours.size()); // 주변 윤곽선을 연결
+	/*
+	if (contours.size > 0)
+	{
+		for (int idx = 0; idx < contours.size; idx++) {
+			Rect rect = boundingRect(contours.size);
+			if (rect.height > 10 && rect.width > 19 && !(rect.width >= 351 - 5 && rect.height >= 283 - 5)) {
+				rectangle(image3, Point(rect.br().x - rect.width, rect.br().y - rect.height),rect.br(),Scalar(0, 255, 0), 1,8,0);
+		}
 	
-	vector<Rect> boundRect(contours.size()); // 번호판마다 사각형 씌어주기
-	vector<Rect> boundRect2(contours.size()); // 번호판 크기에 맞는 사격형을 추려서 다시 담는 정제된 사각형
+	}
+	*/
 	
+
+	/*
+		vector<Rect> boundRect(contours.size()); // 번호판마다 사각형 씌어주기
+	    vector<Rect> boundRect2(contours.size()); // 번호판 크기에 맞는 사격형을 추려서 다시 담는 정제된 사각형
 	//  Bind rectangle to every rectangle.
 	for (int i = 0; i < contours.size(); i++) {
 		approxPolyDP(Mat(contours[i]), contours_poly[i], 1, true);
 		boundRect[i] = boundingRect(Mat(contours_poly[i]));
 	}
 
-	drawing = Mat::zeros(image2.size(), CV_8UC3);
+	drawing = Mat::zeros(imagethr2.size(), CV_8UC3);
 
 	for (int i = 0; i < contours.size(); i++) {
 
@@ -138,12 +147,13 @@ int main()
 			friend_count = count; 
 			rectangle(image3, boundRect2[select].tl(), boundRect2[select].br(), Scalar(255, 0, 0), 1, 8, 0);
 			plate_width = delta_x;  
-		}                           
+		} 
+		
 	}
+	*/
 
-
-	rectangle(image3, boundRect2[select].tl(), boundRect2[select].br(), Scalar(0, 0, 255), 2, 8, 0);
-	line(image3, boundRect2[select].tl(), Point(boundRect2[select].tl().x + plate_width, boundRect2[select].tl().y), Scalar(0, 0, 255), 1, 8, 0);
+	//rectangle(image3, boundRect2[select].tl(), boundRect2[select].br(), Scalar(0, 0, 255), 2, 8, 0);
+	//line(image3, boundRect2[select].tl(), Point(boundRect2[select].tl().x + plate_width, boundRect2[select].tl().y), Scalar(0, 0, 255), 1, 8, 0);
 
 	imshow("Rectangles on original", image3);
 	waitKey(0);
@@ -151,11 +161,9 @@ int main()
 
 
 	
-	imshow("Region of interest", image(Rect(boundRect2[select].tl().x -20, boundRect2[select].tl().y - 20, plate_width + 40, plate_width*0.3)));
-	waitKey(0);
 
-	imwrite("carnumber-1.JPG",
-		image(Rect(boundRect2[select].tl().x - 20, boundRect2[select].tl().y - 20, plate_width + 40, plate_width * 0.3)));
+//	imwrite("carnumber-1.JPG",
+//		image(Rect(boundRect2[select].tl().x - 20, boundRect2[select].tl().y - 20, plate_width + 40, plate_width * 0.3)));
 	
 	exit(0);
 }

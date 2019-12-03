@@ -18,24 +18,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="opencv_color.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="opencv_canny_hconcat.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="opencv_color_capture.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="opencv_shape detection.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="opencv_hough line.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="opencv_roi.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="image_crop_example.cpp">
       <Filter>소스 파일\src</Filter>
     </ClCompile>
@@ -50,10 +32,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="test_crop_image_each_funtion.h">
+    <ClInclude Include="Image_Proccee.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Image_Proccee.h">
+    <ClInclude Include="Edge_process.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

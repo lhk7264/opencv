@@ -24,7 +24,7 @@ class ImageProccess {
 
 		cvtColor(carnumberImage, grayImage, COLOR_BGR2GRAY);
 		adaptiveThreshold(grayImage, adaptiveImage, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 5, 10);
-		Canny(adaptiveImage, adaptiveImage, 100, 300, 3);
+		//Canny(adaptiveImage, adaptiveImage, 100, 300, 3);
 
 		return adaptiveImage;
 	}
