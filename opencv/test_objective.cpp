@@ -22,7 +22,7 @@ int main() {
 	Mat procceedImage = getProcceedImage(carNumberImage);
 	//Mat edgeImage = getEdgeProccesedImage(procceedImage);
 
-	imshow("최종", procceedImage);
+	imshow("이미지", procceedImage);
 
 	waitKey(0);
 
