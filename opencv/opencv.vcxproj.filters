@@ -16,35 +16,38 @@
     <Filter Include="소스 파일\src">
       <UniqueIdentifier>{17b4eb1e-be0e-4b40-bc66-ad20deb57eb0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Test">
+      <UniqueIdentifier>{0c6ae0d3-fe16-429f-b681-23b61bf5715d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="image_crop_example.cpp">
+    <ClCompile Include="CarNumberDetection.cpp">
       <Filter>소스 파일\src</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="test_objective.cpp">
-      <Filter>소스 파일\src</Filter>
-    </ClCompile>
-    <ClCompile Include="image_proccess.cpp">
-      <Filter>소스 파일\src</Filter>
-    </ClCompile>
-    <ClCompile Include="Image_process.cpp">
-      <Filter>소스 파일\src</Filter>
+      <Filter>소스 파일\Test</Filter>
     </ClCompile>
     <ClCompile Include="CarNumBer_Process.cpp">
+      <Filter>소스 파일\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="main_1.cpp">
+      <Filter>소스 파일\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Filtering_contour.cpp">
+      <Filter>소스 파일\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Merge_FindGroup.cpp">
       <Filter>소스 파일\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Image_Proccee.h">
+    <ClInclude Include="CarNumberDetection.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Edge_process.h">
+    <ClInclude Include="Filtering_contour.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Image_process.h">
+    <ClInclude Include="Merge_FindGroup.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
