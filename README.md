@@ -17,26 +17,12 @@
 
 ##### Client>>Raspberry pi 3 model rev 1.2(Raspbian Buster),opencv 4.1.2,Raspberry pi Camera v2 Module
 
-##### 1 기능 : 8자리 차량 번호판 추출
+##### 1 기능 : 차량 번호 Crop
 
-##### 2 기능 : 차량 번호판 추출 차량 번호 인식 
+##### 2 기능 : Crop한 번호판 추출
 
-##### 3 기능 : 인식 된 차량 번호 텍스트화
+#### Process
+![initial](https://user-images.githubusercontent.com/49156302/70393333-161b6a00-1a2c-11ea-94af-481fdc0bfc5c.JPG)
 
-
-#### 1-original
-![initial](https://user-images.githubusercontent.com/49156302/70368402-414b6f80-18ed-11ea-9b04-4e8cd1440075.JPG)
-#### 2-change gray
-![initial](https://user-images.githubusercontent.com/49156302/70368403-41e40600-18ed-11ea-9e1a-5b31defd7e8a.JPG)
-#### 3-Edge
-![initial](https://user-images.githubusercontent.com/49156302/70368404-41e40600-18ed-11ea-9234-78d139fdda9a.JPG)
-#### 4-FindContours
-![initial](https://user-images.githubusercontent.com/49156302/70368405-41e40600-18ed-11ea-9077-15e1c5bdf6fa.JPG)
-#### 5-Filtering_contour
-![initial](https://user-images.githubusercontent.com/49156302/70368406-41e40600-18ed-11ea-8352-7ff1123c46c0.JPG)
-#### 6-Filtering_contour2
-![initial](https://user-images.githubusercontent.com/49156302/70368407-427c9c80-18ed-11ea-8e5e-cbaae6f432b4.JPG)
-#### 7-Merge_1 Group
-![initial](https://user-images.githubusercontent.com/49156302/70368408-427c9c80-18ed-11ea-8dc0-3c9ce972ee54.JPG)
-#### 8-Merge_2 Group
-![initial](https://user-images.githubusercontent.com/49156302/70368409-427c9c80-18ed-11ea-942c-b1e080584fee.JPG)
+#### Result
+![initial](https://user-images.githubusercontent.com/49156302/70393334-161b6a00-1a2c-11ea-9e3a-a4bae6a8d0ad.JPG)
