@@ -1,25 +1,12 @@
-ï»¿#include "CarNumberDetection.h"
+#include "NumBer_Find.h"
 
-int CarNumberDetection()
+int NumBer_Find(Mat Canny_img, Mat ori_image)
 {
-
-	//1. original
-	Mat ori_image = imread("carnumber_ori.jpg");
-	imshow("1.Original image", ori_image);
-	//2. change gray
-	Mat Gray_img;
-	cvtColor(ori_image, Gray_img, COLOR_BGR2GRAY);
-	imshow("2. gray image", Gray_img);
-	//3 Edge
-	Mat Canny_img;
-	Canny(Gray_img, Canny_img, 100, 300, 3);
-	imshow("3. Canny image", Canny_img);
-	
 	//3 FindContours
 	vector<vector<Point> > Contours;
-	vector<Vec4i> mhierarchy;
-	
-	findContours(Canny_img, Contours, mhierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point());
+	vector<Vec4i> hierarchy;
+
+	findContours(Canny_img, Contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE, Point());
 	vector<vector<Point>> Contours_poly(Contours.size());
 	vector<Rect> BoundRect(Contours.size());
 	vector<Rect> BoundRect2(Contours.size());
@@ -29,14 +16,14 @@ int CarNumberDetection()
 		approxPolyDP(Mat(Contours[i]), Contours_poly[i], 1, true);
 		BoundRect[i] = boundingRect(Mat(Contours_poly[i]));
 	}
-	Mat mDrawing_findContour = Mat::zeros(Canny_img.size(), CV_8UC3);
+	Mat Drawing_findContour = Mat::zeros(Canny_img.size(), CV_8UC3);
 	for (unsigned int i = 0; i < Contours.size(); i++) {
-		drawContours(mDrawing_findContour, Contours, i, Scalar(0, 255, 255), 1, 8, mhierarchy, 0, Point());
-		rectangle(mDrawing_findContour, BoundRect[i].tl(), BoundRect[i].br(), Scalar(255, 0, 0), 1, 8, 0);
+		drawContours(Drawing_findContour, Contours, i, Scalar(255, 0, 255), 1, 8, hierarchy, 0, Point());
+		rectangle(Drawing_findContour, BoundRect[i].tl(), BoundRect[i].br(), Scalar(255, 255, 0), 1, 8, 0);
 	}
-	imshow("4. contour image", mDrawing_findContour);
+	imshow("4. contour image", Drawing_findContour);
 
-	Mat mDrawing = Mat::zeros(Canny_img.size(), CV_8UC3);
+	Mat Drawing = Mat::zeros(Canny_img.size(), CV_8UC3);
 	int refind_count = 0;
 	for (unsigned int i = 0; i < Contours.size(); i++) {
 		double mRatio = (double)BoundRect[i].height / BoundRect[i].width;
@@ -44,8 +31,8 @@ int CarNumberDetection()
 		if (((mRatio <= 3.0) && (mRatio >= 0.5))
 			&& ((BoundRect[i].area() <= 160) && (BoundRect[i].area() >= 40)))
 		{
-			drawContours(mDrawing, Contours, i, Scalar(0, 255, 255), 1, 8, mhierarchy, 0, Point());
-			rectangle(mDrawing, BoundRect[i].tl(), BoundRect[i].br(), Scalar(255, 0, 0), 1, 8, 0);
+			drawContours(Drawing, Contours, i, Scalar(255, 0, 255), 1, 8, hierarchy, 0, Point());
+			rectangle(Drawing, BoundRect[i].tl(), BoundRect[i].br(), Scalar(0, 255, 255), 1, 8, 0);
 
 			BoundRect2[refind_count] = BoundRect[i];
 
@@ -57,12 +44,12 @@ int CarNumberDetection()
 	}
 
 	BoundRect2.resize(refind_count);
-	imshow("5. Filtering_contour", mDrawing);
+	imshow("5. Filtering_contour", Drawing);
 
 	//bubble sorting to X-coordinate
 	for (unsigned int i = 1; i < BoundRect2.size(); i++)
 	{
-		for (unsigned int j = 0; j < (BoundRect2.size() - i-1); j++)
+		for (unsigned int j = 0; j < (BoundRect2.size() - i - 1); j++)
 		{
 			if (BoundRect2[j].tl().x > BoundRect2[j + 1].tl().x) {
 				Rect temp_rect;
@@ -79,14 +66,15 @@ int CarNumberDetection()
 			<< " heigh:" << BoundRect2[i].height << " width:" << BoundRect2[i].width << " area:" << BoundRect2[i].area() << endl;
 	}
 
+
 	//Find Number...
-	vector<vector<Rect>> FindGroup(BoundRect2.size());
+	vector<vector<Rect> > FindGroup(BoundRect2.size());
 	int FindGroup_count = 0;
 	Mat image3;
 	ori_image.copyTo(image3);
 	for (unsigned int i = 0; i < BoundRect2.size() - 1; i++)
 	{
-		int m_Horiz_count = 0;
+		int Horiz_count = 0;
 		unsigned int delta_x, delta_y;
 		for (unsigned int j = i + 1; j < BoundRect2.size(); j++)
 		{
@@ -95,7 +83,7 @@ int CarNumberDetection()
 
 			if ((delta_x > 100) || ((delta_x == 0) && (delta_y == 0)))
 			{
-				cout << " m_Horiz_count(i-j) : " << i << "-" << j << "= " << m_Horiz_count << endl;
+				cout << "Horiz_count(i-j) : " << i << "-" << j << "= " << Horiz_count << endl;
 				break;
 			}
 
@@ -105,22 +93,22 @@ int CarNumberDetection()
 
 				if (mGradient < 1.5)
 				{
-					if (m_Horiz_count == 0)
+					if (Horiz_count == 0)
 					{
 						FindGroup[FindGroup_count].push_back(BoundRect2[i]);
 					}
 					FindGroup[FindGroup_count].push_back(BoundRect2[j]);
-					m_Horiz_count++;
+					Horiz_count++;
 				}
 			}
 		}
 
-		//ìˆ«ìž ìž¡ê¸°
-		if (m_Horiz_count > 8) {
+		//¼ýÀÚ Àâ±â
+		if (Horiz_count > 8) {
 			char temp[7];
 			sprintf_s(temp, "%d", i);
-			putText(image3, temp, BoundRect2[i].tl(), cv::FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 0, 255));
-			rectangle(image3, BoundRect2[i].tl(), BoundRect2[i].br(), Scalar(255, 0, 0), 1, 8, 0);
+			//putText(image3, temp, BoundRect2[i].tl(), cv::FONT_HERSHEY_SIMPLEX, 0.5, Scalar(255, 0, 255));
+			rectangle(image3, BoundRect2[i].tl(), BoundRect2[i].br(), Scalar(0, 255, 255), 1, 8, 0);
 			//line(image3, BoundRect2[i].tl(), Point(BoundRect2[i].tl().x + delta_x, BoundRect2[i].tl().y), Scalar(0, 0, 255), 1, 8, 0);
 
 			FindGroup_count++;
@@ -145,7 +133,7 @@ int CarNumberDetection()
 		vector<Rect> tempGroup = FindGroup[i];
 		char temp[7];
 		sprintf_s(temp, "%d", i);
-		putText(Group, temp, tempGroup[0].tl(), cv::FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 0, 255));
+		//putText(Group, temp, tempGroup[0].tl(), cv::FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 0, 255));
 
 		int MaxHight = 0;
 		for (int j = 0; j < tempGroup.size(); j++)
@@ -156,10 +144,10 @@ int CarNumberDetection()
 		Point WiHi;
 		WiHi.x = tempGroup[tempGroup.size() - 1].br().x;
 		WiHi.y = tempGroup[0].y + MaxHight;
-		rectangle(Group, tempGroup[0].tl(), WiHi, Scalar(255, 0, 0), 1, 8, 0);
+		rectangle(Group, tempGroup[0].tl(), WiHi, Scalar(0, 255, 255), 1, 8, 0);
 
 
-		cout << " 5.Group2 : " << i << "== x: " << tempGroup[0].x << "  y:" << tempGroup[0].y
+		cout << " 5.Merge_1 Group : " << i << "== x: " << tempGroup[0].x << "  y:" << tempGroup[0].y
 			<< "  w:" << WiHi.x << "  h:" << WiHi.y << endl;
 
 		Rect temp_merge;
@@ -236,21 +224,37 @@ int CarNumberDetection()
 	{
 		char temp[7];
 		sprintf_s(temp, "%d", i);
-		putText(Group_final, temp, Group_merge[i].tl(), cv::FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 0, 255));
-		rectangle(Group_final, Group_merge[i].tl(), Group_merge[i].br(), Scalar(255, 0, 0), 1, 8, 0);
+		//putText(Group_final, temp, Group_merge[i].tl(), cv::FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 0, 255));
+		rectangle(Group_final, Group_merge[i].tl(), Group_merge[i].br(), Scalar(0, 255, 255), 1, 8, 0);
 
-		cout << "after Group final:" << i << "= X:" << Group_merge[i].x << " Y:" << Group_merge[i].y
+		cout << "Merge_2 Group:" << i << "= X:" << Group_merge[i].x << " Y:" << Group_merge[i].y
 			<< " h:" << Group_merge[i].height << " w:" << Group_merge[i].width << " A:" << Group_merge[i].area() << endl;
 
+		Mat mTempNum;
+		if (Group_merge[i].width < 100)
+		{
+			Group_merge[i].width = (Group_merge[i].width + 100) / 2;
+		}
+
+		if (ori_image.size().height < Group_merge[i].br().y) {
+			Group_merge[i].height -= (Group_merge[i].br().y - ori_image.size().height + 1);
+		}
+		if (ori_image.size().width < Group_merge[i].br().x) {
+			Group_merge[i].width -= (Group_merge[i].br().x - ori_image.size().width + 1);
+		}
+
+		mTempNum = ori_image(Range(Group_merge[i].y, Group_merge[i].br().y), Range(Group_merge[i].x, Group_merge[i].br().x));
+		imshow(temp, mTempNum);
 	}
-	
+
 
 	imshow("8.Merge_2", Group_final);
 
 	waitKey(0);
 
 
-	return 0;
+	return 0
+		;
 
 }
 
